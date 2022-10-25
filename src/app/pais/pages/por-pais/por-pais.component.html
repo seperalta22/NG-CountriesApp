@@ -1,40 +1,42 @@
 <h2>Por Pais</h2>
-<hr>
+<hr />
 
 <div class="row">
   <div class="col">
-    <form autocomplete="off" (ngSubmit)="buscar(termino)">
-      <input type="text" name="termino" [(ngModel)]="termino" class="form-control" placeholder="Buscar pais...">
-    </form>
+    <app-pais-input
+      (onEnter)="buscar($event)"
+      placeholder="buscar pais..."
+      (onDebounce)="sugerencias($event)"
+    >
+    </app-pais-input>
   </div>
 </div>
-<hr>
-<div class="alert alert-danger">
-  no se encontro nada con el termino {{termino}}
+
+<ul *ngIf="mostrarSugerencias" class="list-group">
+  <li
+    role="button"
+    class="list-group-item list-group-item-action"
+    *ngFor="let pais of paisesSugeridos"
+  >
+    <a class="nav-link" [routerLink]="['/pais', pais.alpha2Code]">
+      {{ pais.name }}
+    </a>
+  </li>
+  <li role="button" class="list-group-item list-group-item-action">
+    <a class="nav-link" (click)="buscarSugerido(termino)">
+      Buscar: "{{ termino }}"
+    </a>
+  </li>
+</ul>
+
+<hr />
+
+<div class="alert alert-danger" *ngIf="hayError">
+  no se encontro nada con el termino {{ termino }}
 </div>
 
-<div class="row">
+<div *ngIf="paises.length > 0" class="row">
   <div class="col">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Bandera</th>
-          <th>Nombre</th>
-          <th>Población</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td><img src="https://restcountries.com/data/col.sgv" alt="bandera" width="50px"></td>
-          <td>Afghanistan</td>
-          <td>27657145</td>
-          <td><button class="btn btn-primary">Ver</button></td>
-        </tr>
-      </tbody>
-    </table>
-
+    <app-pais-tabla [paises]="paises"></app-pais-tabla>
   </div>
 </div>

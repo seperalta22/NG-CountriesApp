@@ -1,1 +1,31 @@
-<p>por-region works!</p>
+<h3>Buscar por region: <small>{{regionActiva |titlecase}}</small></h3>
+<hr>
+
+<h5>Seleccione la region</h5>
+
+<!--! Formas de mostrar una clase css condicional  -->
+
+<!-- [class.btn-primary]= "region="region === regionActiva-->
+<!-- [ngClass]="{'btn-primary': region === regionActiva, 'btn-outline-primary': regionActiva !== region}" -->
+
+<!--? la forma siguiente es la que mejor funciona -->
+
+<!-- [class]="(regionActiva === region) ? 'btn btn-primary m-1 px-4':'btn btn-outline-primary m-1 px-4 ' " -->
+
+<!-- ! Pasado la logica a TS -->
+
+<div class="row">
+  <div class="col">
+    <button (click)="activarRegion(region)" *ngFor="let region of regiones" [class]="getClaseCSS(region)">
+      {{region | titlecase}}
+    </button>
+  </div>
+</div>
+
+
+
+<div *ngIf="paises.length > 0" class="row">
+  <div class="col">
+    <app-pais-tabla [paises]="paises"></app-pais-tabla>
+  </div>
+</div>
